@@ -1,7 +1,7 @@
 import express from 'express'
 
 const personaje = express()
-import { getPersonaje, postPersonaje, putPersonaje, dltPersonaje } from '../controllers/ApiPersonaje'
+import { getPersonaje, postPersonaje, putPersonaje, dltPersonaje } from '../controllers/ApiPersonaje.js'
 
 personaje.get('',getPersonaje);
 personaje.post('', postPersonaje);

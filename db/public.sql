@@ -38,3 +38,5 @@ CREATE TABLE Critica
     id SERIAL PRIMARY KEY,
     Comentario_Critica VARCHAR(1000)
 )
+
+
