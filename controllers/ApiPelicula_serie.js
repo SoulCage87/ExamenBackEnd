@@ -2,7 +2,11 @@ import { db } from "../db/conn.js"
 
 const getPelicula = async (req, res) => {
  
-    const sql = `SELECT * from pelicula_serie`;
+    const sql = `SELECT a.titulo, a.anio_lanzamiento as Año_Lanzamiento,
+    b.Comentario_Critica as Critica, c.nombre_genero as Genero
+    FROM pelicula_serie a
+    INNER JOIN Critica b on a.id_critica = b.id
+    INNER JOIN Genero c on a.genero = c.id`;
     const result = await db.query(sql);
     res.json(result);
 };
