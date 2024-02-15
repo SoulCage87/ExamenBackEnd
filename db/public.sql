@@ -50,3 +50,8 @@ b.Comentario_Critica as Critica, c.nombre_genero as Genero
 FROM pelicula_serie a 
 INNER JOIN Critica b on a.id_critica = b.id
 INNER JOIN Genero c on a.genero = c.id
+
+ALTER TABLE Personaje
+ADD COLUMN IMG VARCHAR(10000)
+
+SELECT * FROM personaje

@@ -13,13 +13,13 @@ const getPersonaje = async (req, res) => {
 
 const postPersonaje = async (req,res) => {
 
-    const {nombre, descripcion,edad,id_actor,id_pelicula} = req.body;
-    const params = [nombre,descripcion,edad,id_actor,id_pelicula];
+    const {nombre, descripcion,edad,id_actor,id_pelicula, IMG} = req.body;
+    const params = [nombre,descripcion,edad,id_actor,id_pelicula, IMG];
  
     const sql = `INSERT INTO Personaje
-                 (nombre,descripcion,edad,id_actor,id_pelicula)
+                 (nombre,descripcion,edad,id_actor,id_pelicula, IMG)
                  VALUES
-                 ($1, $2, $3, $4, $5) returning *`;
+                 ($1, $2, $3, $4, $5, $6) returning *`;
  
     const result = await db.query(sql, params); 
     res.json(result);            
@@ -28,7 +28,7 @@ const postPersonaje = async (req,res) => {
 
  const putPersonaje = async (req,res) => {
 
-    const {nombre, descripcion,edad,id_actor,id_pelicula } = req.body;
+    const {nombre, descripcion,edad,id_actor,id_pelicula, IMG } = req.body;
     const {id} = req.params;
     
     const params = [
@@ -37,6 +37,7 @@ const postPersonaje = async (req,res) => {
         edad,
         id_actor,
         id_pelicula,
+        IMG,
         id
     ];
     
@@ -46,8 +47,9 @@ const postPersonaje = async (req,res) => {
      descripcion = $2,
      edad = $3,
      id_actor = $4,
-     id_pelicula = $5
-    where id = $6 returning *`;
+     id_pelicula = $5,
+     IMG = $6
+    where id = $7 returning *`;
     
     const result = await db.query(sql, params);
     res.json(result);
