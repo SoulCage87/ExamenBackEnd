@@ -9,30 +9,31 @@ const getPelicula = async (req, res) => {
     INNER JOIN Genero c on a.genero = c.id`;
     const result = await db.query(sql);
     res.json(result);
-};
+}; 
 
 const postPelicula = async (req,res) => {
 
-    const {nombre, titulo,anio_lanzamiento,id_critica,genero} = req.body;
-    const params = [nombre,titulo,anio_lanzamiento,id_critica,genero];
+    const {nombre_director, titulo,anio_lanzamiento,id_critica,genero} = req.body;
+    const params = [nombre_director,titulo,anio_lanzamiento,id_critica,genero];
  
     const sql = `INSERT INTO pelicula_serie
-                 (nombre,titulo,anio_lanzamiento,id_critica,genero)
+                 (nombre_director,titulo,anio_lanzamiento,id_critica,genero)
                  VALUES
                  ($1, $2, $3, $4, $5) returning *`;
  
     const result = await db.query(sql, params); 
-    res.json(result);            
+    res.json(result); 
+
  
  };
 
  const putPelicula = async (req,res) => {
 
-    const {nombre, titulo,anio_lanzamiento,id_critica,genero } = req.body;
+    const {nombre_director, titulo,anio_lanzamiento,id_critica,genero } = req.body;
     const {id} = req.params;
     
     const params = [
-        nombre,
+        nombre_director,
         titulo,
         anio_lanzamiento,
         id_critica,
@@ -40,9 +41,9 @@ const postPelicula = async (req,res) => {
         id
     ];
     
-    const sql = `update Personaje 
+    const sql = `update pelicula_serie 
     set
-     nombre = $1, 
+    nombre_director = $1, 
      titulo = $2,
      anio_lanzamiento = $3,
      id_critica = $4,

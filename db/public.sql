@@ -54,4 +54,12 @@ INNER JOIN Genero c on a.genero = c.id
 ALTER TABLE Personaje
 ADD COLUMN IMG VARCHAR(10000)
 
-SELECT * FROM personaje
+ALTER TABLE  pelicula_serie
+  RENAME COLUMN nombre TO nombre_director;
+
+  SELECT * from pelicula_serie
+
+  SELECT * from Personaje
+ 
+
+DELETE  FROM pelicula_serie
