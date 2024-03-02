@@ -4,8 +4,19 @@ import { actor } from './routes/route_Actor.js';
 import { genero } from './routes/route_Genero.js';
 import { pelicula } from './routes/route_Pelicula_serie.js';
 import { critica } from './routes/route_critica.js';
+import cors from 'cors'
 const port = 3000;
 const app = express();
+
+const corsOptions = {
+    origin : 'http://localhost:5173', 
+    credentials : true,
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use('/api/personaje', personaje)

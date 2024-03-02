@@ -63,3 +63,4 @@ ALTER TABLE  pelicula_serie
  
 
 DELETE  FROM pelicula_serie
+
