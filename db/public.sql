@@ -51,15 +51,15 @@ FROM pelicula_serie a
 INNER JOIN Critica b on a.id_critica = b.id
 INNER JOIN Genero c on a.genero = c.id
 
-ALTER TABLE Personaje
-ADD COLUMN IMG VARCHAR(10000)
+ALTER TABLE Actor
+ADD COLUMN Fecha_cumpleanos DATE
 
 ALTER TABLE  pelicula_serie
   RENAME COLUMN nombre TO nombre_director;
 
   SELECT * from pelicula_serie
 
-  SELECT * from Personaje
+  SELECT * from Actor
  
 
 DELETE  FROM pelicula_serie
