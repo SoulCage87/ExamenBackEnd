@@ -7,20 +7,28 @@ CREATE Table Personaje
     edad INT,
     id_actor INT REFERENCES Actor(id),
     id_pelicula INT REFERENCES pelicula_serie(id),
-    Fecha_Creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Fecha_Creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    imagen bytea,
+     mime_type VARCHAR(500),
+    nombre_archivo VARCHAR(500),
 );
+
+ALTER TABLE personaje
+DROP COLUMN id_actor
+
+ALTER TABLE actor
+ADD activo BOOLEAN DEFAULT true
 
 CREATE Table Genero
 (
-    id SERIAL PRIMARY KEY,
-    nombre_genero VARCHAR(40)
+    nombre_genero VARCHAR(40) PRIMARY KEY
 )
+
+DROP TABLE Actor
 
 CREATE TABLE Actor
 (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(50),
-    Nacionalidad VARCHAR(50)
+    nombre VARCHAR(50) PRIMARY KEY
 )
 
 CREATE TABLE pelicula_serie
@@ -29,15 +37,56 @@ CREATE TABLE pelicula_serie
     nombre VARCHAR(500),
     titulo VARCHAR(300),
     anio_lanzamiento INT,
-    id_critica INT REFERENCES Critica(id),
-    genero INT REFERENCES Genero(id)
+    genero VARCHAR(40) REFERENCES Genero(nombre_genero)
 )
 
-CREATE TABLE Critica
-(
-    id SERIAL PRIMARY KEY,
-    Comentario_Critica VARCHAR(1000)
+
+CREATE TABLE tbl_usuarios(
+    nombre_usuario VARCHAR(30) PRIMARY KEY,
+    correo_electronico VARCHAR(50),
+    contrasena VARCHAR(20),
+    fecha_creacion TIMESTAMP DEFAULT current_timestamp, 
+    activo BOOLEAN DEFAULT true
 )
+
+ALTER TABLE pelicula_serie
+ADD  nombre_archivo VARCHAR(500)
+    
+    
+
+SELECT * FROM pelicula_serie
+
+SELECT * FROM Personaje
+
+SELECT * FROM tbl_usuarios
+
+DELETE FROM pelicula_serie
+
+SELECT nombre,descripcion,
+    imagen,mime_type, id
+    FROM Personaje
+
+    UPDATE pelicula_serie
+    SET activo = TRUE
+    WHERE id = 18;
+   
+ 
+   INSERT INTO genero
+   (nombre_genero)
+   VALUES
+   ('Horror')
+
+ SELECT pelicula_serie.*, Genero.nombre_genero
+FROM pelicula_serie
+INNER JOIN Genero ON pelicula_serie.genero = Genero.nombre_genero;
+
+
+SELECT pelicula_serie.id, pelicula_serie.nombre, pelicula_serie.titulo, pelicula_serie.anio_lanzamiento, pelicula_serie.genero, 
+       encode(pelicula_serie.imagen, 'base64') AS imagen,
+       pelicula_serie.mime_type, pelicula_serie.nombre_archivo, Genero.nombre_genero
+FROM pelicula_serie
+INNER JOIN Genero ON pelicula_serie.genero = Genero.nombre_genero;
+
 
 SELECT a.nombre, a.descripcion,
 b.nombre as Actor, c.titulo as Titulo_de_Pelicula
@@ -52,14 +101,27 @@ INNER JOIN Critica b on a.id_critica = b.id
 INNER JOIN Genero c on a.genero = c.id
 
 ALTER TABLE Personaje
+<<<<<<< Updated upstream
 ADD COLUMN IMG VARCHAR(10000)
+=======
+ADD COLUMN actor VARCHAR(50) REFERENCES actor(nombre)
+>>>>>>> Stashed changes
 
-ALTER TABLE  pelicula_serie
-  RENAME COLUMN nombre TO nombre_director;
 
   SELECT * from pelicula_serie
 
   SELECT * from Personaje
  
 
+<<<<<<< Updated upstream
 DELETE  FROM pelicula_serie
+=======
+DELETE  FROM pelicula_serie
+
+SELECT pelicula_serie.id, pelicula_serie.nombre,pelicula_serie.sinopsis, pelicula_serie.titulo, pelicula_serie.anio_lanzamiento, pelicula_serie.genero, 
+    encode(pelicula_serie.imagen, 'base64') AS imagen,
+    pelicula_serie.mime_type, Genero.nombre_genero
+    FROM pelicula_serie
+    
+    INNER JOIN Genero ON pelicula_serie.genero = Genero.nombre_genero;
+>>>>>>> Stashed changes

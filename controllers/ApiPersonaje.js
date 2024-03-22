@@ -1,68 +1,90 @@
 import { db } from "../db/conn.js";
 
 const getPersonaje = async (req, res) => {
- 
-    const sql = `SELECT a.nombre, a.descripcion,
-    b.nombre as Actor, c.titulo as Titulo_de_Pelicula
-    FROM Personaje a
-    INNER JOIN Actor b on a.id_actor = b.id
-    INNER JOIN pelicula_serie c on a.id_pelicula = c.id`;
-    const result = await db.query(sql);
-    res.json(result);
+    try {
+        const sql = `SELECT id, 
+            nombre, 
+            descripcion,
+            mime_type, 
+            encode(imagen, 'base64') imagen  
+            FROM Personaje 
+            WHERE activo = true
+            ORDER BY fecha_creacion DESC`;
+        const result = await db.query(sql);
+
+        if (result.length > 0) {
+            res.json(result);
+        } else {
+            res.status(404).json({ mensaje: "Sin datos que mostrar" });
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
+
 
 const postPersonaje = async (req,res) => {
 
-    const {nombre, descripcion,edad,id_actor,id_pelicula, IMG} = req.body;
-    const params = [nombre,descripcion,edad,id_actor,id_pelicula, IMG];
- 
-    const sql = `INSERT INTO Personaje
-                 (nombre,descripcion,edad,id_actor,id_pelicula, IMG)
-                 VALUES
-                 ($1, $2, $3, $4, $5, $6) returning *`;
- 
-    const result = await db.query(sql, params); 
-    res.json(result);            
- 
+    try {
+        const {nombre, descripcion} = req.body;
+
+        const { buffer, mimetype, originalname } = req.file;
+    
+        const params = [nombre,descripcion,buffer,mimetype,originalname];
+     
+        const sql = `INSERT INTO Personaje
+                     (nombre,descripcion,imagen,mime_type,nombre_archivo)
+                     VALUES
+                     ($1, $2, $3, $4, $5) returning nombre, 'Incersion Exitosa' mensaje`;
+     
+        const result = await db.query(sql, params); 
+        res.json(result);            
+       
+    } catch (error) {
+       res.status(500).json(error.message) 
+    }
+   
  };
 
  const putPersonaje = async (req,res) => {
 
-    const {nombre, descripcion,edad,id_actor,id_pelicula, IMG } = req.body;
-    const {id} = req.params;
+    try {
+        const { descripcion } = req.body
+
+        const { id } = req.params
+
+        const params = [descripcion, id]
+
+        const sql = `UPDATE Personaje
+                 SET descripcion = $1
+                 WHERE id = $2
+                 RETURNING descripcion, 'Personaje Editado' mensaje`
+
+        const result = await (db.query(sql, params))
+        res.status(200).json(result)
+    } catch (e) {
+        res.status(500).json(e.message)
+    }
     
-    const params = [
-        nombre,
-        descripcion,
-        edad,
-        id_actor,
-        id_pelicula,
-        IMG,
-        id
-    ];
-    
-    const sql = `update Personaje 
-    set
-     nombre = $1, 
-     descripcion = $2,
-     edad = $3,
-     id_actor = $4,
-     id_pelicula = $5,
-     IMG = $6
-    where id = $7 returning *`;
-    
-    const result = await db.query(sql, params);
-    res.json(result);
     
     };
 
     const dltPersonaje = async (req,res) => {
-        const params = [req.params.id];
+
+        try {
+            const params = [req.params.id];
     
-        const sql = `DELETE FROM Personaje WHERE id = $1 returning *`;
+        const sql = `UPDATE Personaje
+             SET activo = false
+             WHERE id = $1
+             RETURNING 'Publicacion Borrada' mensaje`;
         const result = await db.query(sql,params);
-    
-        res.json(result);
+        res.json(result); 
+        } catch (error) {
+            res.status(500).json(error.message)
+        }
+       
     };
 
 export {getPersonaje, postPersonaje,putPersonaje,dltPersonaje}
