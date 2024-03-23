@@ -101,11 +101,7 @@ INNER JOIN Critica b on a.id_critica = b.id
 INNER JOIN Genero c on a.genero = c.id
 
 ALTER TABLE Personaje
-<<<<<<< Updated upstream
-ADD COLUMN IMG VARCHAR(10000)
-=======
 ADD COLUMN actor VARCHAR(50) REFERENCES actor(nombre)
->>>>>>> Stashed changes
 
 
   SELECT * from pelicula_serie
@@ -113,9 +109,6 @@ ADD COLUMN actor VARCHAR(50) REFERENCES actor(nombre)
   SELECT * from Personaje
  
 
-<<<<<<< Updated upstream
-DELETE  FROM pelicula_serie
-=======
 DELETE  FROM pelicula_serie
 
 SELECT pelicula_serie.id, pelicula_serie.nombre,pelicula_serie.sinopsis, pelicula_serie.titulo, pelicula_serie.anio_lanzamiento, pelicula_serie.genero, 
@@ -124,4 +117,3 @@ SELECT pelicula_serie.id, pelicula_serie.nombre,pelicula_serie.sinopsis, pelicul
     FROM pelicula_serie
     
     INNER JOIN Genero ON pelicula_serie.genero = Genero.nombre_genero;
->>>>>>> Stashed changes
